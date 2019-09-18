@@ -9,7 +9,7 @@ form.onsubmit = function(){
 // function to search for position
 
 function weatherRender(json){
-    var source   = document.getElementById("weatherTemplate").innerHTML;
+    var source   = document.getElementById('weatherTemplate').innerHTML;
     var template = Handlebars.compile(source);
     json['main']['temp'] -= 273.15;
     if(json['main']['temp'] < 10){
@@ -29,25 +29,26 @@ function weatherRender(json){
 }
 
 function errorRender(errorText){
-    var source   = document.getElementById("errorTemplate").innerHTML;
+    var source   = document.getElementById('errorTemplate').innerHTML;
     var template = Handlebars.compile(source);
-
+    var context ={ errorText: errorText}
     document.getElementById('compiled').innerHTML = template(context);
 }
 function weatherFetch(cityName){
-    var cityName = document.getElementById("cityName").value;
+    var cityName = document.getElementById('cityName').value;
     var url =  'http://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + key;
     fetch(url).then(function(response) {
         if(response.ok) {
             response.json().then(function(json) {
-                weatherRender(json);
-            });
+                    weatherRender(json);
+                }
+            );
         } else {
             console.log('Network request for products.json failed with response ' + response.status + ': ' + response.statusText);
             if(response.status === 404){
-                errorRender("City Not Found");
+                errorRender('City Not Found');
             }else{
-                errorRender("Error Occurs");
+                errorRender('Error Occurs');
             }
 
         }
