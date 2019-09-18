@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Current Weather</title>
+    <script type="text/javascript" src ="ThirdParty/handlebars-v4.2.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+
+<div class = "inputCard">
+    <form disabled>
+        <input type="text"  id="cityName" placeholder="City Name"  >
+    </form>
+    <button onclick="weatherFetch()"> Check Out Weather</button>
+</div>
+
+<script id="weatherTemplate" type="text/x-handlebars-template">
+
+    <div class="weatherCard">
+        <h2>{{cityName}}</h2>
+        <h3>{{weatherType}}  <span> Wind {{windSpeed}}km/h <span class="dot">•</span> Humidity {{humidity}}%</span></h3>
+        <h1>{{currTemp}}°</h1>
+    </div>
+
+</script>
+
+<script id="errorTemplate" type="text/x-handlebars-template">
+
+    <div class="errorCard">
+        <h3>{{errorText}} </h3>
+    </div>
+
+</script>
+
+<div id="compiled"></div>
+<script type="text/javascript" src ="weatherFetching.js"></script>
+</body>
+</html>
