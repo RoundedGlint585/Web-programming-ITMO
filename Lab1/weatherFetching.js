@@ -16,14 +16,19 @@ function weatherFetch(cityName){
                     temperature = temperature.toPrecision(3);
                 }
 
-                var context = {cityName: json['name'], weatherType: json['weather'][0]['main'], windSpeed: json['wind']['speed'], humidity: json['main']['humidity'], currTemp: temperature};
+                var context = {
+                    cityName: json['name'],
+                    weatherType: json['weather'][0]['main'],
+                    windSpeed: json['wind']['speed'],
+                    humidity: json['main']['humidity'],
+                    currTemp: temperature};
                 document.getElementById('compiled').innerHTML = template(context);
             });
         } else {
             console.log('Network request for products.json failed with response ' + response.status + ': ' + response.statusText);
             var source   = document.getElementById("errorTemplate").innerHTML;
             var template = Handlebars.compile(source);
-            if(response.status == 404){
+            if(response.status === 404){
                 var context = {errorText: "City Not Found"};
             }else{
                 var context = {errorText: "Error occurs"};
