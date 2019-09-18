@@ -2,7 +2,10 @@ const key = '6f2aa31213f556b4d1b03a048629724f';
 
 
 const form = document.getElementById('inputForm');
-form.onsubmit = weatherFetch;
+form.onsubmit = function(){
+    event.preventDefault();
+    weatherFetch();
+};
 // function to search for position
 
 function weatherRender(json){
@@ -10,9 +13,9 @@ function weatherRender(json){
     var template = Handlebars.compile(source);
     json['main']['temp'] -= 273.15;
     if(json['main']['temp'] < 10){
-        json['main']['temp'] = json['main']['temp'] .toPrecision(2);
+        json['main']['temp'] = json['main']['temp'].toPrecision(2);
     }else{
-        json['main']['temp'] = json['main']['temp'] .toPrecision(3);
+        json['main']['temp'] = json['main']['temp'].toPrecision(3);
     }
 
     var context = {
@@ -20,7 +23,8 @@ function weatherRender(json){
         weatherType: json['weather'][0]['main'],
         windSpeed: json['wind']['speed'],
         humidity: json['main']['humidity'],
-        currTemp: json['main']['temp']};
+        currTemp: json['main']['temp']
+    };
     document.getElementById('compiled').innerHTML = template(context);
 }
 
