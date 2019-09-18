@@ -34,11 +34,3 @@ function weatherFetch(cityName){
         }
     });
 }
-
-
-
-
-
-
-
-alert(kek);
