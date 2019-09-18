@@ -10,10 +10,11 @@
 
 
 <div class = "inputCard">
-    <form disabled>
-        <input type="text"  id="cityName" placeholder="City Name"  >
+    <form onsubmit="event.preventDefault(); weatherFetch()">
+        <input type="text"  id="cityName" placeholder="City Name">
+        <button onclick="weatherFetch()"> Check Out Weather</button>
     </form>
-    <button onclick="weatherFetch()"> Check Out Weather</button>
+
 </div>
 
 <script id="weatherTemplate" type="text/x-handlebars-template">

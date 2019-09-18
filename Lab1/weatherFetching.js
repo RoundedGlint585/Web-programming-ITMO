@@ -28,9 +28,9 @@ function weatherFetch(cityName){
             }else{
                 var context = {errorText: "Error occurs"};
             }
-
             document.getElementById('compiled').innerHTML = template(context);
-            //alert("City not found, try another one");
         }
     });
+    return false;
 }
+// stop propagation
