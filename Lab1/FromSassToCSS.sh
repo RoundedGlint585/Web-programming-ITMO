@@ -1,1 +1,1 @@
-sass styles.sass styles.css
+sass styles.sass index.css
