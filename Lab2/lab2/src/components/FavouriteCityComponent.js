@@ -61,7 +61,7 @@ export default class FavouriteCityComponent extends Component {
     fahrenheitTransform(degrees){
         degrees -= 273.15;
         if(degrees < 10){
-            degrees = degrees.toPrecision(2);
+            degrees = degrees.toPrecision(1);
         }else{
             degrees = degrees.toPrecision(3);
         }
@@ -88,6 +88,7 @@ export default class FavouriteCityComponent extends Component {
                             <h2>{this.fahrenheitTransform(this.state.temperature)}</h2>
                             <img src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"}
                                  alt="weather image"/>
+
                         </div>
                         <ul className='add-info-list'>
                             <li className='add-info-list__item'>

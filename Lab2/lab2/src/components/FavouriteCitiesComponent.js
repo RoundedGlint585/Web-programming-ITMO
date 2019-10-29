@@ -49,8 +49,8 @@ class FavouriteCitiesComponent extends Component {
                 <li key={index}>
                     <FavouriteCityComponent name={data.name}/>
                 </li>
-                <div>
-                    <button onClick={(e) => this.deleteFavouriteCity(e, index)}>
+                <div className='favourite-city-button-container'>
+                    <button onClick={(e) => this.deleteFavouriteCity(e, index)} className="favourite-city-button-container__button">
                         Remove
                     </button>
                 </div>
@@ -69,10 +69,10 @@ class FavouriteCitiesComponent extends Component {
             <div className='favourite-cities'>
                 <div className='favourite-cities-header' >
                     <h3 >Favourite</h3>
-                    <form onSubmit={this.handleSubmit} >
-                        <input type="text" onChange={this.handleChange}
-                               value={this.state.name}/>
-                        <input type="submit"  value="ADD"/>
+                    <form onSubmit={this.handleSubmit}  className="favourite-cities__submit-form">
+                        <input type="text" placeholder="Your favourite city" onChange={this.handleChange}
+                               value={this.state.name} className="submit-form__input" />
+                        <button type="submit" className="submit-form__button"> Add</button>
                     </form>
                 </div>
 

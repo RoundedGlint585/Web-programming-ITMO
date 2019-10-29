@@ -22,7 +22,39 @@
     justify-content: space-between;
 }
 
-.favourite-city-input-form{}
+.favourite-cities__submit-form{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.submit-form__input{
+    font-family: "SF Display", serif;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 300;
+    background-color: #FFF;
+    border: none;
+    height: 50px;
+    display: block;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.submit-form__button{
+    display:inline-block;
+    padding:0.5em 3em;
+    border: none;
+    margin-left: 10px;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:400;
+    color:#000;
+    text-align:center;
+    transition: all 0.15s;
+}
 
 .favourite-cities-list{
     display: flex;
@@ -36,11 +68,35 @@
     padding-right: 10px;
 }
 .favourite-city-container{
+    max-width: 320px;
+    min-width: 300px;
+
     flex-grow: 1;
 }
+.favourite-city-button-container{
+    display: flex;
+    padding-right: 10px;
+    padding-top: 10px;
+    justify-content: space-between;
+}
+.favourite-city-button-container__button{
+    display:inline-block;
+    padding:0.5em 3em;
+    width: 100%;
+
+    border: none;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:400;
+    color:#000;
+    text-align:center;
+    transition: all 0.15s;
+}
 .favourite-city-widget__main-info{
+    height: 80px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 .add-info-list{
     padding-left:0;
