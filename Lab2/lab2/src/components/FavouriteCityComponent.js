@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import '../favouriteCityStyles.css';
+import WeatherDataInfo from "./WeatherDataInfo";
+import Loader from "./Loader";
+
 const key = '6f2aa31213f556b4d1b03a048629724f';
 export default class FavouriteCityComponent extends Component {
 
@@ -18,6 +21,8 @@ export default class FavouriteCityComponent extends Component {
             description: '',
             icon: '0d',
             wind: 0,
+            longitude: 0,
+            latitude: 0,
         };
     }
 
@@ -56,17 +61,21 @@ export default class FavouriteCityComponent extends Component {
             weatherIcon: json['weather'][0]['icon'],
             description: json['weather'][0]['main'],
             wind: json['wind']['speed'],
+            longitude: json['coord']['lon'],
+            latitude: json['coord']['lat'],
         });
     }
-    fahrenheitTransform(degrees){
+
+    fahrenheitTransform(degrees) {
         degrees -= 273.15;
-        if(degrees < 10){
+        if (degrees < 10) {
             degrees = degrees.toPrecision(1);
-        }else{
+        } else {
             degrees = degrees.toPrecision(3);
         }
         return degrees;
     }
+
     render() {
         return (
             this.state.loadingError === true ?
@@ -74,40 +83,18 @@ export default class FavouriteCityComponent extends Component {
                     <p>Error</p>
                 </div> :
                 this.state.loaded === false ?
-                    <div className="spinner">
-                        <div className="rect1"></div>
-                        <div className="rect2"></div>
-                        <div className="rect3"></div>
-                        <div className="rect4"></div>
-                        <div className="rect5"></div>
-                    </div>
+                    <Loader/>
                     :
                     <div className='favourite-city-widget'>
-                        <div className= 'favourite-city-widget__main-info'>
+                        <div className='favourite-city-widget__main-info'>
                             <h2> {this.state.cityName}</h2>
                             <h2>{this.fahrenheitTransform(this.state.temperature)}</h2>
                             <img src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"}
                                  alt="weather image"/>
 
                         </div>
-                        <ul className='add-info-list'>
-                            <li className='add-info-list__item'>
-                                <p>Wind</p>
-                                <p>{this.state.wind}</p>
-                            </li>
-                            <li className='add-info-list__item'>
-                                <p>Description</p>
-                                <p>{this.state.description}</p>
-                            </li>
-                            <li className='add-info-list__item' >
-                                <p>Pressure</p>
-                                <p>{this.state.pressure}</p>
-                            </li>
-                            <li className='add-info-list__item'>
-                                <p>Humidity</p>
-                                <p>{this.state.humidity}</p>
-                            </li>
-                        </ul>
+                        <WeatherDataInfo wind = {this.state.wind} description = {this.state.description} pressure = {this.state.pressure} humidity = {this.state.humidity}
+                                         longitude = {this.state.longitude.toPrecision(3)} latitude = {this.state.latitude.toPrecision(3)}/>
 
                     </div>
         )

@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
+import {fahrenheitTransform} from '../utils';
 import '../mainStyles.css';
+import WeatherDataInfo from "./WeatherDataInfo";
+import Loader from "./Loader";
 const key = '6f2aa31213f556b4d1b03a048629724f';
 export default class MainComponent extends Component {
     constructor(props) {
         super(props);
         this.writeWeatherData = this.writeWeatherData.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.writeFetchedData = this.writeFetchedData.bind(this);
+        this.checkFetchedData = this.checkFetchedData.bind(this);
         this.state = {
             loaded: false,
             loadingError: false,
@@ -17,6 +20,8 @@ export default class MainComponent extends Component {
             description: '',
             icon: '0d',
             wind: 0,
+            longitude: 0,
+            latitude: 0,
         };
     }
 
@@ -28,7 +33,7 @@ export default class MainComponent extends Component {
         console.log("kek");
         let url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + this.props.pos.latitude + '&lon=' + this.props.pos.longitude + '&appid=' + key;
         fetch(url)
-            .then(response => response.json()).then(this.writeFetchedData);
+            .then(response => response.json()).then(this.checkFetchedData);
     }
 
     componentDidMount() {
@@ -43,7 +48,7 @@ export default class MainComponent extends Component {
         }
     }
 
-    writeFetchedData(response) {
+    checkFetchedData(response) {
         console.log( response);
         if (response !== undefined) {
             this.writeWeatherData(response);
@@ -51,7 +56,6 @@ export default class MainComponent extends Component {
             this.setState({loadingError: true});
         }
     }
-
     writeWeatherData(json) {
         this.setState({
             loaded: true,
@@ -62,16 +66,9 @@ export default class MainComponent extends Component {
             weatherIcon: json['weather'][0]['icon'],
             description: json['weather'][0]['main'],
             wind: json['wind']['speed'],
+            longitude: json['coord']['lon'],
+            latitude: json['coord']['lat'],
         });
-    }
-    fahrenheitTransform(degrees){
-        degrees -= 273.15;
-        if(degrees < 10){
-            degrees = degrees.toPrecision(1);
-        }else{
-            degrees = degrees.toPrecision(3);
-        }
-        return degrees;
     }
     render() {
         return (
@@ -80,13 +77,7 @@ export default class MainComponent extends Component {
                     Error
                 </div> :
                 this.state.loaded === false ?
-                    <div className="spinner">
-                        <div className="rect1"></div>
-                        <div className="rect2"></div>
-                        <div className="rect3"></div>
-                        <div className="rect4"></div>
-                        <div className="rect5"></div>
-                    </div>
+                    <Loader/>
                     :
                     <main className='main'>
                         <div className='main-widget'>
@@ -94,32 +85,11 @@ export default class MainComponent extends Component {
                             <div className='main__temp-container'>
                                 <img className='weather-icon' src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"}
                                      alt="weather image"/>
-                                <h1  className='temperature'>{this.fahrenheitTransform(this.state.temperature)}°C</h1>
+                                <h1  className='temperature'>{fahrenheitTransform(this.state.temperature)}°C</h1>
                             </div>
                         </div>
-
-                            <ul className='add-info-list' >
-                                <li className='add-info-list__item' >
-                                    <p >Wind</p>
-                                    <p >{this.state.wind}</p>
-                                </li>
-                                <li className='add-info-list__item'>
-                                    <p >Description</p>
-                                    <p >{this.state.description}</p>
-                                </li >
-                                <li className='add-info-list__item'>
-                                    <p >Pressure</p>
-                                    <p >{this.state.pressure}</p>
-                                </li>
-                                <li className='add-info-list__item'>
-                                    <p >Humidity</p>
-                                    <p >{this.state.humidity}</p>
-                                </li>
-                                <li className='add-info-list__item'>
-                                    <p>Coordinates</p>
-                                    <p >[{this.props.pos.longitude.toPrecision(3)},{this.props.pos.latitude.toPrecision(3)}]</p>
-                                </li>
-                            </ul>
+                        <WeatherDataInfo wind = {this.state.wind} description = {this.state.description} pressure = {this.state.pressure} humidity = {this.state.humidity}
+                                         longitude = {this.state.longitude.toPrecision(3)} latitude = {this.state.latitude.toPrecision(3)}/>
 
                     </main>
         )
