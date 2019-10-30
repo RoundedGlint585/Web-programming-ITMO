@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import '../favouriteCityStyles.css';
 import WeatherDataInfo from "./WeatherDataInfo";
 import Loader from "./Loader";
+import {fetchWeatherDataByName} from "../utils";
 
-const key = '6f2aa31213f556b4d1b03a048629724f';
+
 export default class FavouriteCityComponent extends Component {
 
     constructor(props) {
@@ -32,9 +33,7 @@ export default class FavouriteCityComponent extends Component {
             loaded: false,
             loadingError: false,
         });
-        let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + this.props.name + '&appid=' + key;
-        fetch(url)
-            .then(response => response.json()).then(this.writeFetchedData);
+        fetchWeatherDataByName(this.props.name, this.writeFetchedData);
     }
 
     componentDidMount() {

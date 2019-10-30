@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {fahrenheitTransform} from '../utils';
+import {fahrenheitTransform, fetchWeatherDataByPos} from '../utils';
 import '../mainStyles.css';
 import WeatherDataInfo from "./WeatherDataInfo";
 import Loader from "./Loader";
@@ -20,8 +20,8 @@ export default class MainComponent extends Component {
             description: '',
             icon: '0d',
             wind: 0,
-            longitude: 0,
-            latitude: 0,
+            longitude: props.longitude,
+            latitude: props.latitude,
         };
     }
 
@@ -31,13 +31,11 @@ export default class MainComponent extends Component {
             loadingError: false,
         });
         console.log("kek");
-        let url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + this.props.pos.latitude + '&lon=' + this.props.pos.longitude + '&appid=' + key;
-        fetch(url)
-            .then(response => response.json()).then(this.checkFetchedData);
+        fetchWeatherDataByPos(this.props.longitude,  this.props.latitude,this.checkFetchedData);
     }
 
     componentDidMount() {
-        if (this.props.pos !== "") {
+        if (this.props.loaded === true) {
             this.fetchWeather();
         }
     }

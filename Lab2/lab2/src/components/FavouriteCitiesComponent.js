@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as favouriteCityAction from '../actions/favouriteCityAction';
 import FavouriteCityComponent from "./FavouriteCityComponent";
 import '../favouriteCityStyles.css';
-const key = '6f2aa31213f556b4d1b03a048629724f';
+import {fetchWeatherDataByName} from "../utils";
 
 class FavouriteCitiesComponent extends Component {
 
@@ -39,8 +39,7 @@ class FavouriteCitiesComponent extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + this.state.name + '&appid=' + key;
-        fetch(url).then(this.validateAndAddCityName);
+        fetchWeatherDataByName(this.validateAndAddCityName, this.writeFetchedData);
     }
 
     listView(data, index) {

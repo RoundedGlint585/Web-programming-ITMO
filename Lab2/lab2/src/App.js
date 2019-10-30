@@ -12,17 +12,21 @@ class App extends Component{
     super(props);
     this.state = {
       name: '',
-      pos: ''
+      latitude: 0,
+      longitude: 0,
+      loaded: false,
     };
     this.writePosition = this.writePosition.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
   }
   async writePosition(position) {
-    this.setState({pos: position.coords});
+    this.setState({latitude: position.coords.latitude, longitude: position.coords.longitude, loaded: true});
+
   }
   updatePosition(){
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.writePosition);
+      navigator.geolocation.getCurrentPosition(this.writePosition, ()=>{
+        this.setState({latitude: 0,longitude:0, loaded: true}) });
     } else {
       alert('Geolocation is not supported in your browser');
     }
@@ -32,12 +36,13 @@ class App extends Component{
   }
 
   render() {
-    const position = this.state.pos;
-    console.log(position);
+    const latitude = this.state.latitude;
+    const longitude = this.state.longitude;
+    const loaded = this.state.loaded;
     return(
         <div>
           <HeaderComponent onClick={this.updatePosition}/>
-          <MainComponent pos={position}/>
+          <MainComponent latitude={latitude} longitude={longitude} loaded={loaded}/>
           <FavouriteCitiesComponent/>
         </div>
     )
