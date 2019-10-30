@@ -3,6 +3,9 @@ Second lab on web development
 
 In the project directory, you can run:
 
+### `npm install`
+Installs dependency for project
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
