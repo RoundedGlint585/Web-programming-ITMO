@@ -11,7 +11,6 @@ class FavouriteCitiesComponent extends Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.validateAndAddCityName = this.validateAndAddCityName.bind(this);
         this.state = {
             name: ''
         }
@@ -23,23 +22,9 @@ class FavouriteCitiesComponent extends Component {
         })
     }
 
-    validateAndAddCityName(response) {
-        if (response.ok) {
-            let city = {
-                name: this.state.name
-            };
-            this.setState({
-                name: ''
-            });
-            this.props.addFavouriteCity(city);
-        } else {
-            alert("City not found");
-        }
-    }
-
     handleSubmit(e) {
         e.preventDefault();
-        fetchWeatherDataByName(this.validateAndAddCityName, this.writeFetchedData);
+        this.props.validateAndAddCity(this.state.name);
     }
 
     listView(data, index) {
@@ -59,7 +44,7 @@ class FavouriteCitiesComponent extends Component {
 
     deleteFavouriteCity(e, index) {
         e.preventDefault();
-        this.props.deleteFavouriteCity(index);
+        this.props.deleteCity(index);
     }
 
     render() {
@@ -69,7 +54,7 @@ class FavouriteCitiesComponent extends Component {
                 <div className='favourite-cities-header' >
                     <h3 >Favourite</h3>
                     <form onSubmit={this.handleSubmit}  className="favourite-cities__submit-form">
-                        <input type="text" placeholder="Your favourite city" onChange={this.handleChange}
+                        <input type="text" placeholder="Type city here..." onChange={this.handleChange}
                                value={this.state.name} className="submit-form__input" />
                         <button type="submit" className="submit-form__button"> Add</button>
                     </form>
@@ -86,6 +71,7 @@ class FavouriteCitiesComponent extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    console.log(state);
     return {
         cities: state.cities
     }
@@ -93,9 +79,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addFavouriteCity: city => dispatch(favouriteCityAction.addFavouriteCity(city)),
-        deleteFavouriteCity: index => dispatch(favouriteCityAction.deleteFavouriteCity(index))
-    }
+        validateAndAddCity: city => dispatch(favouriteCityAction.validateAndAddCity(city)),
+        deleteCity: index => dispatch(favouriteCityAction.deleteCity(index))
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavouriteCitiesComponent);
