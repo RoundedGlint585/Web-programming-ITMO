@@ -1,0 +1,27 @@
+{
+  "name": "lab1",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "chai": "^4.2.0",
+    "jsdom": "^15.2.0",
+    "mocha": "^6.2.2",
+    "mocha-jsdom": "^2.0.0",
+    "node-fetch": "^2.6.0"
+  },
+  "scripts": {
+    "test": "mocha --timeout 15000"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
