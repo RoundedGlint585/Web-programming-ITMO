@@ -9,6 +9,7 @@ import {configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureMockStore from "redux-mock-store";
 import {shallowToJson} from "enzyme-to-json";
+import MainComponent from "../components/MainComponent";
 
 configure({adapter: new Adapter()});
 
@@ -20,8 +21,12 @@ test('Test loading render for FavouriteCities', () => {
         json: () => mockJsonPromise,
     });
     global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
-    let container = renderer.create(<FavouriteCityComponent name='Moscow'> </FavouriteCityComponent>);
-    expect(container).toMatchSnapshot();
+    const mockStore = configureMockStore();
+    const store = mockStore({cities:[]});
+    const wrapper = shallow(
+        <FavouriteCityComponent store={store} name='Moscow'/>).dive();
+    wrapper.render();
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 
 test('Test loaded city render for FavouriteCities', () => {
@@ -74,7 +79,12 @@ test('Test loaded city render for FavouriteCities', () => {
 
     global.fetch = require("node-fetch");
     jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise);
-    const wrapper = shallow(<FavouriteCityComponent name='Moscow'/>);
+    const mockStore = configureMockStore();
+    const store = mockStore({cities:[]});
+    const wrapper = shallow(
+        <FavouriteCityComponent store={store} name='Moscow'/>).dive();
+    wrapper.render();
+    wrapper.componentDidMount()
     wrapper.instance().componentDidMount().then(()=>{
         wrapper.render();
         expect(shallowToJson(wrapper)).toMatchSnapshot()});
@@ -94,4 +104,10 @@ test('Test entering text in FavouriteCitiesComponent', () => {
     const input = temp.find('input');
     input.simulate('change', { target: { value: 'Hello' } })
     expect(shallowToJson(temp)).toMatchSnapshot();
+});
+
+test('Main weather component', () =>{
+    const wrapper = shallow(<MainComponent></MainComponent>);
+    wrapper.render();
+
 });

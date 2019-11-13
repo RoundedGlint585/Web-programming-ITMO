@@ -3,8 +3,8 @@ import {fahrenheitTransform, fetchWeatherDataByPos} from '../utils';
 import '../mainStyles.css';
 import WeatherDataInfo from "./WeatherDataInfo";
 import Loader from "./Loader";
+import WeatherImageComponent from "./WeatherImageComponent";
 
-const key = '6f2aa31213f556b4d1b03a048629724f';
 export default class MainComponent extends Component {
     constructor(props) {
         super(props);
@@ -31,7 +31,6 @@ export default class MainComponent extends Component {
             loaded: false,
             loadingError: false,
         });
-        console.log("kek");
         return fetchWeatherDataByPos(this.props.longitude, this.props.latitude, this.checkFetchedData);
     }
 
@@ -87,9 +86,7 @@ export default class MainComponent extends Component {
                 <div className='main-widget'>
                     <h2 className='main__title'>{this.state.cityName}</h2>
                     <div className='main__temp-container'>
-                        <img className='weather-icon'
-                             src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"}
-                             alt="weather image"/>
+                        <WeatherImageComponent image={this.state.weatherIcon} />
                         <h1 className='temperature'>{fahrenheitTransform(this.state.temperature)}°C</h1>
                     </div>
                 </div>

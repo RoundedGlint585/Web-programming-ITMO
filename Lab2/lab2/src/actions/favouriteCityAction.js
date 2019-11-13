@@ -18,14 +18,15 @@ export const deleteFavouriteCity = (id) => {
 
 export function validateAndAddCity(city) {
     return (dispatch) => {
-        fetchWeatherDataByName(city, function(response){
-            if (response.cod === 200) {
-                dispatch(addFavouriteCity(city));
-            } else {
-                alert("City not found");
-            }
-            }
-        );
+        dispatch(addFavouriteCity(city));
+        // fetchWeatherDataByName(city, function(response){
+        //     if (response.cod === 200) {
+        //         dispatch(addFavouriteCity(city));
+        //     } else {
+        //         alert("City not found");
+        //     }
+        //     }
+        // );
     };
 }
 

@@ -31,7 +31,7 @@ class FavouriteCitiesComponent extends Component {
         return (
             <div className='favourite-city-container'>
                 <li key={index}>
-                    <FavouriteCityComponent name={data.name}/>
+                    <FavouriteCityComponent name={data.name} index={index}/>
                 </li>
                 <div className='favourite-city-button-container'>
                     <button onClick={(e) => this.deleteFavouriteCity(e, index)} className="favourite-city-button-container__button">

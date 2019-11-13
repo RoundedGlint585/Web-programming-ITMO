@@ -3,9 +3,12 @@ import '../favouriteCityStyles.css';
 import WeatherDataInfo from "./WeatherDataInfo";
 import Loader from "./Loader";
 import {fetchWeatherDataByName} from "../utils";
+import WeatherImageComponent from "./WeatherImageComponent";
+import * as favouriteCityAction from "../actions/favouriteCityAction";
+import {connect} from "react-redux";
 
 
-export default class FavouriteCityComponent extends Component {
+class FavouriteCityComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -42,11 +45,13 @@ export default class FavouriteCityComponent extends Component {
 
 
     writeFetchedData(response) {
-        console.log(response);
-        if (response.cod !== 404) {
+        console.log(response.cod);
+
+        if (response.cod !== '404') {
             this.writeWeatherData(response);
         } else {
-            this.setState({loadingError: true});
+            this.props.deleteCity(this.props.index);
+            //this.setState({loadingError: true});
         }
     }
 
@@ -88,8 +93,7 @@ export default class FavouriteCityComponent extends Component {
                         <div className='favourite-city-widget__main-info'>
                             <h2> {this.state.cityName}</h2>
                             <h2>{this.fahrenheitTransform(this.state.temperature)}</h2>
-                            <img src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"} // Вытащить компонент
-                                 alt="weather image"/>
+                            <WeatherImageComponent image={this.state.weatherIcon} />
 
                         </div>
                         <WeatherDataInfo wind = {this.state.wind} description = {this.state.description} pressure = {this.state.pressure} humidity = {this.state.humidity}
@@ -99,3 +103,18 @@ export default class FavouriteCityComponent extends Component {
         )
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    console.log(state);
+    return {
+        cities: state.cities
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deleteCity: index => dispatch(favouriteCityAction.deleteCity(index))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FavouriteCityComponent);
