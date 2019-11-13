@@ -81,14 +81,11 @@ test('Test loaded city render for FavouriteCities', () => {
     jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise);
     const mockStore = configureMockStore();
     const store = mockStore({cities:[]});
-    const wrapper = shallow(
-        <FavouriteCityComponent store={store} name='Moscow'/>).dive();
+    const wrapper = shallow(<FavouriteCityComponent store={store} name='Moscow'/>);
     wrapper.render();
-    wrapper.componentDidMount()
-    wrapper.instance().componentDidMount().then(()=>{
+    wrapper.dive().dive().instance().componentDidMount().then(()=>{
         wrapper.render();
         expect(shallowToJson(wrapper)).toMatchSnapshot()});
-
 });
 
 
@@ -106,8 +103,73 @@ test('Test entering text in FavouriteCitiesComponent', () => {
     expect(shallowToJson(temp)).toMatchSnapshot();
 });
 
-test('Main weather component', () =>{
-    const wrapper = shallow(<MainComponent></MainComponent>);
+test('Main weather component loading', () =>{
+    const wrapper = shallow(<MainComponent/>).dive();
     wrapper.render();
-
+    wrapper.instance().setState({loaded: false});
+    wrapper.render();
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
+
+test('Main weather component loaded', () =>{
+    const mockSuccessResponse = {
+        "coord": {
+            "lon": -0.13,
+            "lat": 51.51
+        },
+        "weather": [
+            {
+                "id": 300,
+                "main": "Drizzle",
+                "description": "light intensity drizzle",
+                "icon": "09d"
+            }
+        ],
+        "base": "stations",
+        "main": {
+            "temp": 280.32,
+            "pressure": 1012,
+            "humidity": 81,
+            "temp_min": 279.15,
+            "temp_max": 281.15
+        },
+        "visibility": 10000,
+        "wind": {
+            "speed": 4.1,
+            "deg": 80
+        },
+        "clouds": {
+            "all": 90
+        },
+        "dt": 1485789600,
+        "sys": {
+            "type": 1,
+            "id": 5091,
+            "message": 0.0103,
+            "country": "GB",
+            "sunrise": 1485762037,
+            "sunset": 1485794875
+        },
+        "id": 2643743,
+        "name": "London",
+        "cod": 200
+    };
+    const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+    const mockFetchPromise = Promise.resolve({
+        json: () => mockJsonPromise,
+    });
+
+    global.fetch = require("node-fetch");
+    jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise);
+
+
+    const wrapper = shallow(<MainComponent/>);
+    wrapper.render();
+    wrapper.instance().setState({loaded: true});
+    wrapper.instance().componentDidMount().then(()=>{
+        wrapper.render();
+        expect(shallowToJson(wrapper)).toMatchSnapshot()});
+    //wrapper.instance().componentDidMount();
+    //expect(shallowToJson(wrapper)).toMatchSnapshot();
+});
+
