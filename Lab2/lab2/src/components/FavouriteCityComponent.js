@@ -33,17 +33,16 @@ export default class FavouriteCityComponent extends Component {
             loaded: false,
             loadingError: false,
         });
-        console.log("Logname:", this.props.name);
-        fetchWeatherDataByName(this.props.name, this.writeFetchedData);
+        return fetchWeatherDataByName(this.props.name, this.writeFetchedData);
     }
 
     componentDidMount() {
-        this.fetchWeather();
+        return this.fetchWeather();
     }
 
 
     writeFetchedData(response) {
-        console.log("loles", response);
+        console.log(response);
         if (response.cod != 404) {
             this.writeWeatherData(response);
         } else {

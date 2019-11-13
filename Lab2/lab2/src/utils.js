@@ -11,12 +11,27 @@ export function fahrenheitTransform(degrees){
 
 export function fetchWeatherDataByName(name, handler){
     let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + name + '&appid=' + key;
-    fetch(url)
+    return fetch(url)
         .then(response => response.json()).then(handler);
 }
 
 export function fetchWeatherDataByPos(longitude, latitude, handler){
     let url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&appid=' + key;
-    fetch(url)
+    return fetch(url)
         .then(response => response.json()).then(handler);
+}
+
+export function writeWeatherData(instance, json) {
+    instance.setState({
+        loaded: true,
+        cityName: json['name'],
+        temperature: json['main']['temp'],
+        pressure: json['main']['pressure'],
+        humidity: json['main']['humidity'],
+        weatherIcon: json['weather'][0]['icon'],
+        description: json['weather'][0]['main'],
+        wind: json['wind']['speed'],
+        longitude: json['coord']['lon'],
+        latitude: json['coord']['lat'],
+    });
 }

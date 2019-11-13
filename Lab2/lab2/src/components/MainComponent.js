@@ -3,6 +3,7 @@ import {fahrenheitTransform, fetchWeatherDataByPos} from '../utils';
 import '../mainStyles.css';
 import WeatherDataInfo from "./WeatherDataInfo";
 import Loader from "./Loader";
+
 const key = '6f2aa31213f556b4d1b03a048629724f';
 export default class MainComponent extends Component {
     constructor(props) {
@@ -31,31 +32,32 @@ export default class MainComponent extends Component {
             loadingError: false,
         });
         console.log("kek");
-        fetchWeatherDataByPos(this.props.longitude,  this.props.latitude,this.checkFetchedData);
+        return fetchWeatherDataByPos(this.props.longitude, this.props.latitude, this.checkFetchedData);
     }
 
     componentDidMount() {
         if (this.props.loaded === true) {
-            this.fetchWeather();
+            return this.fetchWeather();
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps !== this.props) {
-            this.fetchWeather();
+            return this.fetchWeather();
         }
     }
 
     checkFetchedData(response) {
-        console.log( response);
+        console.log(response);
         if (response !== undefined) {
-            this.writeWeatherData(response);
+            this.writeWeatherData(this, response);
         } else {
             this.setState({loadingError: true});
         }
     }
-    writeWeatherData(json) {
-        this.setState({
+
+    writeWeatherData(instance, json) {
+        instance.setState({
             loaded: true,
             cityName: json['name'],
             temperature: json['main']['temp'],
@@ -68,28 +70,35 @@ export default class MainComponent extends Component {
             latitude: json['coord']['lat'],
         });
     }
-    render() {
-        return (
-            this.state.loadingError === true ?
-                <div className="alert">
-                    Error
-                </div> :
-                this.state.loaded === false ?
-                    <Loader/>
-                    :
-                    <main className='main'>
-                        <div className='main-widget'>
-                            <h2 className='main__title'>{this.state.cityName}</h2>
-                            <div className='main__temp-container'>
-                                <img className='weather-icon' src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"}
-                                     alt="weather image"/>
-                                <h1  className='temperature'>{fahrenheitTransform(this.state.temperature)}°C</h1>
-                            </div>
-                        </div>
-                        <WeatherDataInfo wind = {this.state.wind} description = {this.state.description} pressure = {this.state.pressure} humidity = {this.state.humidity}
-                                         longitude = {this.state.longitude.toPrecision(3)} latitude = {this.state.latitude.toPrecision(3)}/>
 
-                    </main>
+    render() {
+        if (this.state.loadingError === true) {
+            return (<div className="alert">
+                Error
+            </div>)
+        }
+        if (this.state.loaded === false) {
+            return (
+                <Loader/>
+            )
+        }
+        return (
+            <main className='main'>
+                <div className='main-widget'>
+                    <h2 className='main__title'>{this.state.cityName}</h2>
+                    <div className='main__temp-container'>
+                        <img className='weather-icon'
+                             src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"}
+                             alt="weather image"/>
+                        <h1 className='temperature'>{fahrenheitTransform(this.state.temperature)}°C</h1>
+                    </div>
+                </div>
+                <WeatherDataInfo wind={this.state.wind} description={this.state.description}
+                                 pressure={this.state.pressure} humidity={this.state.humidity}
+                                 longitude={this.state.longitude.toPrecision(3)}
+                                 latitude={this.state.latitude.toPrecision(3)}/>
+
+            </main>
         )
     }
 
