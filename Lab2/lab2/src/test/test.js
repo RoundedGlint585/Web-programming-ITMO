@@ -4,7 +4,6 @@ import FavouriteCityComponent from "../components/FavouriteCityComponent";
 import fetch from 'node-fetch'
 import jest from 'jest-mock';
 import {shallow, render, mount} from 'enzyme';
-import { Provider } from "react-redux";
 import FavouriteCitiesComponent from "../components/FavouriteCitiesComponent";
 import {configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';

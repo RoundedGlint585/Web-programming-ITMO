@@ -43,7 +43,7 @@ export default class FavouriteCityComponent extends Component {
 
     writeFetchedData(response) {
         console.log(response);
-        if (response.cod != 404) {
+        if (response.cod !== 404) {
             this.writeWeatherData(response);
         } else {
             this.setState({loadingError: true});
@@ -88,7 +88,7 @@ export default class FavouriteCityComponent extends Component {
                         <div className='favourite-city-widget__main-info'>
                             <h2> {this.state.cityName}</h2>
                             <h2>{this.fahrenheitTransform(this.state.temperature)}</h2>
-                            <img src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"}
+                            <img src={'http://openweathermap.org/img/w/' + this.state.weatherIcon + ".png"} // Вытащить компонент
                                  alt="weather image"/>
 
                         </div>
