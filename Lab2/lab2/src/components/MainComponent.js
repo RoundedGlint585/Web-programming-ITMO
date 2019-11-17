@@ -35,7 +35,7 @@ export default class MainComponent extends Component {
     }
 
     componentDidMount() {
-        if (this.props.loaded === true) {
+        if (this.state.loaded === true) {
             return this.fetchWeather();
         }
     }

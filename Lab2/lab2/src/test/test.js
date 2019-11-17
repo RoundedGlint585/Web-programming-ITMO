@@ -14,7 +14,7 @@ import MainComponent from "../components/MainComponent";
 configure({adapter: new Adapter()});
 
 
-test('Test loading render for FavouriteCities', () => {
+test('Test FavouriteCity loading render', () => {
     const mockSuccessResponse = {};
     const mockJsonPromise = Promise.resolve(mockSuccessResponse);
     const mockFetchPromise = Promise.resolve({
@@ -29,7 +29,7 @@ test('Test loading render for FavouriteCities', () => {
     expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 
-test('Test loaded city render for FavouriteCities', () => {
+test('Test FavouriteCity loaded city render', () => {
     const mockSuccessResponse = {
         "coord": {
             "lon": -0.13,
@@ -90,20 +90,8 @@ test('Test loaded city render for FavouriteCities', () => {
 
 
 
-test('Test entering text in FavouriteCitiesComponent', () => {
-    const mockStore = configureMockStore();
-    const store = mockStore({cities:[]});
-    const wrapper = shallow(
-            <FavouriteCitiesComponent store={store}> </FavouriteCitiesComponent>).dive();
-    wrapper.render();
-    const temp = wrapper.find('FavouriteCitiesComponent').dive();
-    temp.render();
-    const input = temp.find('input');
-    input.simulate('change', { target: { value: 'Hello' } })
-    expect(shallowToJson(temp)).toMatchSnapshot();
-});
 
-test('Main weather component loading', () =>{
+test('Test Main weather component loading', () =>{
     const wrapper = shallow(<MainComponent/>).dive();
     wrapper.render();
     wrapper.instance().setState({loaded: false});
@@ -111,7 +99,7 @@ test('Main weather component loading', () =>{
     expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 
-test('Main weather component loaded', () =>{
+test('Test Main weather component loaded', () =>{
     const mockSuccessResponse = {
         "coord": {
             "lon": -0.13,
@@ -165,11 +153,25 @@ test('Main weather component loaded', () =>{
 
     const wrapper = shallow(<MainComponent/>);
     wrapper.render();
-    wrapper.instance().setState({loaded: true});
+    wrapper.instance().setState({loaded: true, longitude: 0.0, latitude: 0.0 });
     wrapper.instance().componentDidMount().then(()=>{
         wrapper.render();
         expect(shallowToJson(wrapper)).toMatchSnapshot()});
-    //wrapper.instance().componentDidMount();
-    //expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
+
+
+test('Test FavouriteCities ', ()=>{
+    const mockSuccessResponse = {};
+    const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+    const mockFetchPromise = Promise.resolve({
+        json: () => mockJsonPromise,
+    });
+    global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
+    const mockStore = configureMockStore();
+    const store = mockStore({cities:[]});
+    const wrapper = shallow(
+        <FavouriteCitiesComponent store={store} name='Moscow'/>).dive();
+    wrapper.render();
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
+})
 
