@@ -10,6 +10,10 @@ import Adapter from 'enzyme-adapter-react-16';
 import configureMockStore from "redux-mock-store";
 import {shallowToJson} from "enzyme-to-json";
 import MainComponent from "../components/MainComponent";
+import Loader from "../components/Loader";
+import WeatherDataInfo from "../components/WeatherDataInfo";
+import HeaderComponent from "../components/HeaderComponent";
+import WeatherImageComponent from "../components/WeatherImageComponent";
 
 configure({adapter: new Adapter()});
 
@@ -173,5 +177,28 @@ test('Test FavouriteCities ', ()=>{
         <FavouriteCitiesComponent store={store} name='Moscow'/>).dive();
     wrapper.render();
     expect(shallowToJson(wrapper)).toMatchSnapshot();
-})
+});
 
+test('Loader rendered', ()=>{
+   const wrapper = shallow(<Loader></Loader>);
+   wrapper.render();
+   expect(shallowToJson(wrapper)).toMatchSnapshot();
+});
+
+test('WeatherDataInfo rendered', ()=>{
+    const wrapper = shallow(<WeatherDataInfo wind={10} description={'Weather'} pressure={'High'} humidity={'80'}  longitude = {20.1} latitude={20.1}/>)
+    wrapper.render();
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
+});
+
+test('Header component rendered', ()=>{
+   const wrapper = shallow(<HeaderComponent/>);
+   wrapper.render();
+   expect(shallowToJson(wrapper)).toMatchSnapshot();
+});
+
+test('WeatherImageComponent rendered', ()=>{
+    const wrapper = shallow(<WeatherImageComponent image={'2b'}/>);
+    wrapper.render();
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
+});
