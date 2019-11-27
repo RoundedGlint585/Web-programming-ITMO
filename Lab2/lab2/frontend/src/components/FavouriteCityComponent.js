@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../favouriteCityStyles.css';
 import WeatherDataInfo from "./WeatherDataInfo";
 import Loader from "./Loader";
-import {fetchWeatherDataByName} from "../utils";
+import {addFavouriteCityToDB, fetchWeatherDataByName} from "../utils";
 import WeatherImageComponent from "./WeatherImageComponent";
 import * as favouriteCityAction from "../actions/favouriteCityAction";
 import {connect} from "react-redux";
@@ -36,6 +36,7 @@ class FavouriteCityComponent extends Component {
             loaded: false,
             loadingError: false,
         });
+        console.log("Express test");
         return fetchWeatherDataByName(this.props.name, this.writeFetchedData);
     }
 
@@ -45,9 +46,10 @@ class FavouriteCityComponent extends Component {
 
 
     writeFetchedData(response) {
-        console.log(response.cod);
+        console.log("Response from express:", response);
 
-        if (response.cod !== '404') {
+        if (response.cod === '200') {
+            addFavouriteCityToDB(this.props.name);
             this.writeWeatherData(response);
         } else {
             this.props.deleteCity(this.props.index);
@@ -113,7 +115,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        deleteCity: index => dispatch(favouriteCityAction.deleteCity(index))
+        deleteCity: city => dispatch(favouriteCityAction.deleteCity(city))
     };
 };
 

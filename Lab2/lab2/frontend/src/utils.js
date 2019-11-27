@@ -10,15 +10,40 @@ export function fahrenheitTransform(degrees){
 }
 
 export function fetchWeatherDataByName(name, handler){
-    let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + name + '&appid=' + key;
+
+    let url = '/weather?city=' + name;
     return fetch(url)
         .then(response => response.json()).then(handler);
 }
 
 export function fetchWeatherDataByPos(longitude, latitude, handler){
-    let url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + latitude + '&lon=' + longitude + '&appid=' + key;
+
+    let url = '/weather/coordinates?lat=' + latitude + '&long=' + longitude;
     return fetch(url)
         .then(response => response.json()).then(handler);
+}
+
+export function deleteCityFromDB(name){
+    let url = '/favourites?city=' + name;
+    return fetch(url, {
+        method: 'delete'
+    })
+        .then(response => response.json());
+}
+
+export function addFavouriteCityToDB(name){
+    let url = '/favourites?city=' + name;
+    return fetch(url, {
+        method: 'post'
+    })
+        .then(response => response.json());
+}
+
+export  function fetchFavouritesCities(handler){
+    let url = '/favourites';
+    return fetch(url).then(response => response.json()).then( (data)=>{
+        handler(data);
+    })
 }
 
 export function writeWeatherData(instance, json) {

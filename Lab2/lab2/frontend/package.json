@@ -5,12 +5,13 @@
   "dependencies": {
     "enzyme": "^3.10.0",
     "enzyme-to-json": "^3.4.3",
+    "express": "latest",
     "jest-mock": "latest",
     "node-fetch": "^2.6.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.1",
-    "react-scripts": "3.2.0",
+    "react-scripts": "^3.2.0",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
     "redux-thunk": "^2.3.0"
@@ -22,10 +23,10 @@
     }
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "jest",
-    "eject": "react-scripts eject"
+    "start": "node_modules/.bin/react-scripts start",
+    "build": "node_modules/.bin/react-scripts build",
+    "test": "node_modules/.bin/jest",
+    "eject": "node_modules/.bin/react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

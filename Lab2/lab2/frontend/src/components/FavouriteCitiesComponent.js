@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import * as favouriteCityAction from '../actions/favouriteCityAction';
 import FavouriteCityComponent from "./FavouriteCityComponent";
 import '../favouriteCityStyles.css';
-import {fetchWeatherDataByName} from "../utils";
+import {fetchFavouritesCities, fetchWeatherDataByName} from "../utils";
+import {loadCities} from "../actions/favouriteCityAction";
 
 class FavouriteCitiesComponent extends Component {
 
@@ -11,9 +12,16 @@ class FavouriteCitiesComponent extends Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.componentDidMount = this.componentDidMount(this);
         this.state = {
             name: ''
         }
+    }
+
+    componentDidMount() {
+        console.log("Cities mounted");
+        fetchFavouritesCities(this.props.loadCities);
+        //this.props.loadCities();
     }
 
     handleChange(e) {
@@ -30,11 +38,11 @@ class FavouriteCitiesComponent extends Component {
     listView(data, index) {
         return (
             <div className='favourite-city-container'>
-                <li key={index}>
+                <li key={data.name}>
                     <FavouriteCityComponent name={data.name} index={index}/>
                 </li>
                 <div className='favourite-city-button-container'>
-                    <button onClick={(e) => this.deleteFavouriteCity(e, index)} className="favourite-city-button-container__button">
+                    <button onClick={(e) => this.deleteFavouriteCity(e, data.name)} className="favourite-city-button-container__button">
                         Remove
                     </button>
                 </div>
@@ -80,7 +88,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         validateAndAddCity: city => dispatch(favouriteCityAction.validateAndAddCity(city)),
-        deleteCity: index => dispatch(favouriteCityAction.deleteCity(index))
+        deleteCity: city => dispatch(favouriteCityAction.deleteCity(city)),
+        loadCities: cities => dispatch(favouriteCityAction.loadCities(cities)),
     };
 };
 

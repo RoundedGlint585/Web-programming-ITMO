@@ -173,5 +173,5 @@ test('Test FavouriteCities ', ()=>{
         <FavouriteCitiesComponent store={store} name='Moscow'/>).dive();
     wrapper.render();
     expect(shallowToJson(wrapper)).toMatchSnapshot();
-})
+});
 
