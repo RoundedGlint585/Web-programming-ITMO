@@ -10,7 +10,7 @@ var db = pgp("postgres://web_lab4:12345678@localhost:5432/web_lab4");
 global.fetch = require("node-fetch");
 
 
-app.use(express.static(path.join(__dirname, '../frontend/build')))
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'))

@@ -48,8 +48,7 @@ class FavouriteCityComponent extends Component {
     writeFetchedData(response) {
         console.log("Response from express:", response);
 
-        if (response.cod === '200') {
-            addFavouriteCityToDB(this.props.name);
+        if (response.cod == 200) {
             this.writeWeatherData(response);
         } else {
             this.props.deleteCity(this.props.index);

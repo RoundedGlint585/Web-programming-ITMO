@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as favouriteCityAction from '../actions/favouriteCityAction';
 import FavouriteCityComponent from "./FavouriteCityComponent";
 import '../favouriteCityStyles.css';
-import {fetchFavouritesCities, fetchWeatherDataByName} from "../utils";
+import {addFavouriteCityToDB, fetchFavouritesCities, fetchWeatherDataByName} from "../utils";
 import {loadCities} from "../actions/favouriteCityAction";
 
 class FavouriteCitiesComponent extends Component {
@@ -32,6 +32,7 @@ class FavouriteCitiesComponent extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        addFavouriteCityToDB(this.state.name);
         this.props.validateAndAddCity(this.state.name);
     }
 
