@@ -1,7 +1,7 @@
 
 const assert = require('assert');
 const mocha = require('mocha');
-var fetchMock = require('fetch-mock');
+const fetchMock = require('fetch-mock');
 const describe = mocha.describe;
 
 const test = require('../weatherFetching.js');
