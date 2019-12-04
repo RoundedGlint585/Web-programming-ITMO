@@ -12,26 +12,25 @@ global.fetch = require("node-fetch");
 
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 });
 
-app.get('/weather', function (req, res) {
+app.get('/weather', async (req, res)  => {
     return fetchWeatherDataByName(req.query.city, (resp)=>{res.status(200).send(resp)});
-    //res.send(req.query);
 });
 
-app.get('/weather/coordinates', function(req, res){
+app.get('/weather/coordinates', async (req, res) =>{
     return fetchWeatherDataByPos(req.query.lat, req.query.long, (resp)=>{res.status(200).send(resp)});
 });
 
-app.get('/favourites', function(req, res){
+app.get('/favourites', async (req, res) =>{
     console.log("Requested cities");
     db.many("SELECT * FROM cities;").then((data)=>{res.send(data);})
     //fetchWeatherDataByPos(req.query.lat, req.query.long, (resp)=>{res.send(resp)});
 });
 
-app.post('/favourites', function(req, res){
+app.post('/favourites', async (req, res) => {
     fetchWeatherDataByName(req.query.city, function(response){
         console.log(response);
         if(response){
@@ -59,7 +58,7 @@ app.listen(3000, function () {
 
 const key = '6f2aa31213f556b4d1b03a048629724f';
 
-function fetchWeatherDataByName(name, handler){
+async function fetchWeatherDataByName(name, handler){
     let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + name + '&appid=' + key;
     request(url, function (error, response, body) {
         console.log('error:', error); // Print the error if one occurred and handle it
@@ -68,7 +67,7 @@ function fetchWeatherDataByName(name, handler){
     });
 }
 
-function fetchWeatherDataByPos(longitude, latitude, handler){
+async function fetchWeatherDataByPos(longitude, latitude, handler){
     console.log(longitude, latitude);
     let url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + longitude +  '&lon=' + latitude + '&appid=' + key;
     request(url, function (error, response, body) {
