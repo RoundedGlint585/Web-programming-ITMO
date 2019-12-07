@@ -26,7 +26,7 @@ test('Test FavouriteCity loading render', () => {
     });
     global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
     const mockStore = configureMockStore();
-    const store = mockStore({cities:[]});
+    const store = mockStore({cities: []});
     const wrapper = shallow(
         <FavouriteCityComponent store={store} name='Moscow'/>).dive();
     wrapper.render();
@@ -84,18 +84,17 @@ test('Test FavouriteCity loaded city render', () => {
     global.fetch = require("node-fetch");
     jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise);
     const mockStore = configureMockStore();
-    const store = mockStore({cities:[]});
+    const store = mockStore({cities: []});
     const wrapper = shallow(<FavouriteCityComponent store={store} name='Moscow'/>);
     wrapper.render();
-    wrapper.dive().dive().instance().componentDidMount().then(()=>{
+    wrapper.dive().dive().instance().componentDidMount().then(() => {
         wrapper.render();
-        expect(shallowToJson(wrapper)).toMatchSnapshot()});
+        expect(shallowToJson(wrapper)).toMatchSnapshot()
+    });
 });
 
 
-
-
-test('Test Main weather component loading', () =>{
+test('Test Main weather component loading', () => {
     const wrapper = shallow(<MainComponent/>).dive();
     wrapper.render();
     wrapper.instance().setState({loaded: false});
@@ -103,7 +102,7 @@ test('Test Main weather component loading', () =>{
     expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 
-test('Test Main weather component loaded', () =>{
+test('Test Main weather component loaded', () => {
     const mockSuccessResponse = {
         "coord": {
             "lon": -0.13,
@@ -157,14 +156,15 @@ test('Test Main weather component loaded', () =>{
 
     const wrapper = shallow(<MainComponent/>);
     wrapper.render();
-    wrapper.instance().setState({loaded: true, longitude: 0.0, latitude: 0.0 });
-    wrapper.instance().componentDidMount().then(()=>{
+    wrapper.instance().setState({loaded: true, longitude: 0.0, latitude: 0.0});
+    wrapper.instance().componentDidMount().then(() => {
         wrapper.render();
-        expect(shallowToJson(wrapper)).toMatchSnapshot()});
+        expect(shallowToJson(wrapper)).toMatchSnapshot()
+    });
 });
 
 
-test('Test FavouriteCities ', ()=>{
+test('Test FavouriteCities ', () => {
     const mockSuccessResponse = {};
     const mockJsonPromise = Promise.resolve(mockSuccessResponse);
     const mockFetchPromise = Promise.resolve({
@@ -172,32 +172,33 @@ test('Test FavouriteCities ', ()=>{
     });
     global.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
     const mockStore = configureMockStore();
-    const store = mockStore({cities:[]});
+    const store = mockStore({cities: []});
     const wrapper = shallow(
         <FavouriteCitiesComponent store={store} name='Moscow'/>).dive();
     wrapper.render();
     expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 
-test('Loader rendered', ()=>{
-   const wrapper = shallow(<Loader></Loader>);
-   wrapper.render();
-   expect(shallowToJson(wrapper)).toMatchSnapshot();
-});
-
-test('WeatherDataInfo rendered', ()=>{
-    const wrapper = shallow(<WeatherDataInfo wind={10} description={'Weather'} pressure={'High'} humidity={'80'}  longitude = {20.1} latitude={20.1}/>)
+test('Loader rendered', () => {
+    const wrapper = shallow(<Loader></Loader>);
     wrapper.render();
     expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 
-test('Header component rendered', ()=>{
-   const wrapper = shallow(<HeaderComponent/>);
-   wrapper.render();
-   expect(shallowToJson(wrapper)).toMatchSnapshot();
+test('WeatherDataInfo rendered', () => {
+    const wrapper = shallow(<WeatherDataInfo wind={10} description={'Weather'} pressure={'High'} humidity={'80'}
+                                             longitude={20.1} latitude={20.1}/>)
+    wrapper.render();
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 
-test('WeatherImageComponent rendered', ()=>{
+test('Header component rendered', () => {
+    const wrapper = shallow(<HeaderComponent/>);
+    wrapper.render();
+    expect(shallowToJson(wrapper)).toMatchSnapshot();
+});
+
+test('WeatherImageComponent rendered', () => {
     const wrapper = shallow(<WeatherImageComponent image={'2b'}/>);
     wrapper.render();
     expect(shallowToJson(wrapper)).toMatchSnapshot();
