@@ -59,9 +59,9 @@ app.listen(3000, function () {
 const key = '6f2aa31213f556b4d1b03a048629724f';
 
 async function fetchWeatherDataByName(name, handler){
-    let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + name + '&appid=' + key;
-    request(url, function (error, response, body) {
-        console.log('error:', error); // Print the error if one occurred and handle it
+    let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + name + '&appid=' + key;
+    request.get(url, function (error, response, body) {
+        //console.log('error:', error); // Print the error if one occurred and handle it
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         handler(body);
     });
@@ -69,13 +69,10 @@ async function fetchWeatherDataByName(name, handler){
 
 async function fetchWeatherDataByPos(longitude, latitude, handler){
     console.log(longitude, latitude);
-    let url = 'http://api.openweathermap.org/data/2.5/weather?lat=' + longitude +  '&lon=' + latitude + '&appid=' + key;
-    request(url, function (error, response, body) {
-        console.log('error:', error); // Print the error if one occurred and handle it
+    let url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + longitude +  '&lon=' + latitude + '&appid=' + key;
+    request.post(url, function (error, response, body) {
+        //console.log('error:', error); // Print the error if one occurred and handle it
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         handler(body);
     });
-
-    // return fetch(url)
-    //     .then(response => response.json()).then(handler);
 }
