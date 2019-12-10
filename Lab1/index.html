@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Current Weather</title>
-    <script type="text/javascript" src ="ThirdParty/handlebars-v4.2.0.js"></script>
+
 
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
@@ -13,7 +13,7 @@
 <div class = "inputCard">
     <form id = "inputForm">
         <input type="text"  id="cityName" placeholder="City Name">
-        <input type="submit" value=" Check Out Weather">
+        <input type="submit" id="submit-city" value=" Check Out Weather">
     </form>
 
 </div>
@@ -37,6 +37,7 @@
 </script>
 
 <div id="compiled"></div>
+<script type="text/javascript" src ="ThirdParty/handlebars-v4.2.0.js"></script>
 <script type="text/javascript" src ="weatherFetching.js"></script>
 <script type="text/javascript" src ="submitHandle.js"></script>
 </body>

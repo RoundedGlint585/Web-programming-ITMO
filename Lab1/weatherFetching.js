@@ -1,5 +1,10 @@
 const key = '6f2aa31213f556b4d1b03a048629724f';
 
+function inputCallback(e){
+    e.preventDefault();
+    const cityName = e.target[0].value;
+    weatherFetch(cityName, weatherRender, errorRender);
+}
 // function to search for position
 function fromFahrenheitToCelsius(temp){
     let result = temp -273.15;
@@ -43,7 +48,9 @@ function weatherFetch(cityName, successCallback, errorCallback){
                 errorCallback('Error Occurs');
             }
         }
+    }).catch(function(err){
+
     });
 }
 
-module.exports = {fromFahrenheitToCelsius, weatherFetch, weatherRender, errorRender};
+//module.exports = {fromFahrenheitToCelsius, weatherFetch, weatherRender, errorRender};

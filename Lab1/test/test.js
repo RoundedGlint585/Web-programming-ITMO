@@ -1,15 +1,19 @@
 
 const assert = require('assert');
 const mocha = require('mocha');
+const path = require('path');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 const fetchMock = require('fetch-mock');
 const describe = mocha.describe;
+const rewire = require('rewire');
+const sinon = require('sinon');
 
-const test = require('../weatherFetching.js');
-
+const app = rewire('../weatherFetching.js');
 
 describe("From Fahrenheit to Celsius", function() {
     it('290 in fahrenheit should be equal to 16.9', function () {
-        assert.equal(test.fromFahrenheitToCelsius(290), 16.9, "Temperatures are not equal");
+        assert.equal(app.__get__('fromFahrenheitToCelsius')(290), 16.9, "Temperatures are not equal");
     });
 });
 
@@ -62,7 +66,7 @@ describe("Fetch check", function(){
         //global.fetch = require("node-fetch");
 
         try {
-            test.weatherFetch('Moscow', (json) => {
+            app.__get__('weatherFetch')('Moscow', (json) => {
                 done()
             })
         }
@@ -75,7 +79,7 @@ describe("Fetch check", function(){
         fetchMock.mock('*', 404);
         //global.fetch = require("node-fetch");
         try{
-            test.weatherFetch('adaf', ()=>{},  (name)=>{done()})
+            app.__get__('weatherFetch')('adaf', ()=>{},  (name)=>{done()})
         }
         catch (err) {
             console.log(err);
@@ -83,3 +87,101 @@ describe("Fetch check", function(){
         fetchMock.reset();
     })
 });
+
+describe("Document test", function(){
+    const mockSuccessResponse = {
+        "coord": {
+            "lon": -0.13,
+            "lat": 51.51
+        },
+        "weather": [
+            {
+                "id": 300,
+                "main": "Drizzle",
+                "description": "light intensity drizzle",
+                "icon": "09d"
+            }
+        ],
+        "base": "stations",
+        "main": {
+            "temp": 280.32,
+            "pressure": 1012,
+            "humidity": 81,
+            "temp_min": 279.15,
+            "temp_max": 281.15
+        },
+        "visibility": 10000,
+        "wind": {
+            "speed": 4.1,
+            "deg": 80
+        },
+        "clouds": {
+            "all": 90
+        },
+        "dt": 1485789600,
+        "sys": {
+            "type": 1,
+            "id": 5091,
+            "message": 0.0103,
+            "country": "GB",
+            "sunrise": 1485762037,
+            "sunset": 1485794875
+        },
+        "id": 2643743,
+        "name": "London",
+        "cod": 200
+    };
+
+    it('Document loading', ()=> {
+        JSDOM.fromFile("index.html", {runScripts: "dangerously", resources: "usable"}).then(dom => {
+            const mockSuccessResponse = {
+                "coord": {
+                    "lon": -0.13,
+                    "lat": 51.51
+                },
+                "weather": [
+                    {
+                        "id": 300,
+                        "main": "Drizzle",
+                        "description": "light intensity drizzle",
+                        "icon": "09d"
+                    }
+                ],
+                "base": "stations",
+                "main": {
+                    "temp": 280.32,
+                    "pressure": 1012,
+                    "humidity": 81,
+                    "temp_min": 279.15,
+                    "temp_max": 281.15
+                },
+                "visibility": 10000,
+                "wind": {
+                    "speed": 4.1,
+                    "deg": 80
+                },
+                "clouds": {
+                    "all": 90
+                },
+                "dt": 1485789600,
+                "sys": {
+                    "type": 1,
+                    "id": 5091,
+                    "message": 0.0103,
+                    "country": "GB",
+                    "sunrise": 1485762037,
+                    "sunset": 1485794875
+                },
+                "id": 2643743,
+                "name": "London",
+                "cod": 200
+            };
+            fetchMock.mock('*', mockSuccessResponse);
+            //global.fetch = mockFetchPromise;
+            //global.fetch = require("node-fetch");
+                global.document = dom.window.document;
+                app.__get__('weatherFetch')('Moscow', app.__get__('weatherRender'))
+                })
+        });
+        fetchMock.reset();
+    });

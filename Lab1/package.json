@@ -8,7 +8,8 @@
     "jsdom": "^15.2.0",
     "mocha": "^6.2.2",
     "mocha-jsdom": "^2.0.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "puppeteer": "latest"
   },
   "scripts": {
     "test": "mocha --timeout 15000"
@@ -24,5 +25,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "rewire": "^4.0.1",
+    "sinon": "^7.5.0"
   }
 }
