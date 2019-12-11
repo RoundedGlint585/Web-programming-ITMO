@@ -9,6 +9,7 @@
     "mocha": "^6.2.2",
     "mocha-jsdom": "^2.0.0",
     "node-fetch": "^2.6.0",
+    "pubsub-js": "^1.7.0",
     "puppeteer": "latest"
   },
   "scripts": {
