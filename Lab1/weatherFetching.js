@@ -48,8 +48,6 @@ function weatherFetch(cityName, successCallback, errorCallback){
                 errorCallback('Error Occurs');
             }
         }
-    }).catch(function(err){
-
     });
 }
 
