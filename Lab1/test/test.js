@@ -168,7 +168,5 @@ describe("Document test", function () {
         });
         fetchMock.reset();
     });
-
-
 });
 
