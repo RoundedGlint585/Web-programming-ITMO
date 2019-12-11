@@ -1,9 +1,8 @@
-
 const assert = require('assert');
 const mocha = require('mocha');
 const path = require('path');
 const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const {JSDOM} = jsdom;
 const fetchMock = require('fetch-mock');
 const describe = mocha.describe;
 const rewire = require('rewire');
@@ -13,14 +12,14 @@ const Handlebars = require('../ThirdParty/handlebars-v4.2.0');
 
 const app = rewire('../weatherFetching.js');
 
-describe("From Fahrenheit to Celsius", function() {
+describe("From Fahrenheit to Celsius", function () {
     it('290 in fahrenheit should be equal to 16.9', function () {
         assert.equal(app.__get__('fromFahrenheitToCelsius')(290), 16.9, "Temperatures are not equal");
     });
 });
 
-describe("Fetch check", function(){
-    it('Success callback', function(done){
+describe("Fetch check", function () {
+    it('Success callback', function (done) {
         const mockSuccessResponse = {
             "coord": {
                 "lon": -0.13,
@@ -71,26 +70,27 @@ describe("Fetch check", function(){
             app.__get__('weatherFetch')('Moscow', (json) => {
                 done()
             })
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
         fetchMock.reset();
-   });
-    it('Error callback', function(done){
+    });
+    it('Error callback', function (done) {
         fetchMock.mock('*', 404);
         //global.fetch = require("node-fetch");
-        try{
-            app.__get__('weatherFetch')('adaf', ()=>{},  (name)=>{done()})
-        }
-        catch (err) {
+        try {
+            app.__get__('weatherFetch')('adaf', () => {
+            }, (name) => {
+                done()
+            })
+        } catch (err) {
             console.log(err);
         }
         fetchMock.reset();
     })
 });
 
-describe("Document test", function(){
+describe("Document test", function () {
     const mockSuccessResponse = {
         "coord": {
             "lon": -0.13,
@@ -134,11 +134,11 @@ describe("Document test", function(){
         "cod": 200
     };
 
-    it('Document weather render called correctly', ()=> {
+    it('Document weather render called correctly', () => {
         JSDOM.fromFile("index.html", {runScripts: "dangerously", resources: "usable"}).then(dom => {
             fetchMock.mock('*', mockSuccessResponse);
             let callback = sinon.spy();
-            PubSub.subscribe("weatherRender",callback);
+            PubSub.subscribe("weatherRender", callback);
             global.Handlebars = Handlebars;
             global.document = dom.window.document;
             global.weatherFetch = sinon.stub();
@@ -151,11 +151,11 @@ describe("Document test", function(){
         });
         fetchMock.reset();
     });
-    it('Document error render', ()=> {
+    it('Document error render', () => {
         JSDOM.fromFile("index.html", {runScripts: "dangerously", resources: "usable"}).then(dom => {
             fetchMock.mock('*', 404);
             let callback = sinon.spy();
-            PubSub.subscribe("errorRender",callback);
+            PubSub.subscribe("errorRender", callback);
             global.Handlebars = Handlebars;
             global.document = dom.window.document;
             global.weatherFetch = sinon.stub();
@@ -170,5 +170,5 @@ describe("Document test", function(){
     });
 
 
-    });
+});
 
